@@ -28,7 +28,6 @@ public class PlayerInputs : MonoBehaviour
         _body = GetComponent<Rigidbody2D>();
         _shield = GetComponent<PlayerShield>();
     }
-
     void Update()
     {
         //_movement.movementInput.Set(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
@@ -39,31 +38,27 @@ public class PlayerInputs : MonoBehaviour
             //_movement.MoveInDirection();
             jump = true;
         }
-        if (Input.GetButtonDown("Attack01"))
+        if (Input.GetButtonDown("Fire1"))
         {
             StartAttack01();
         }
-        if (Input.GetButtonUp("Attack01"))
+        if (Input.GetButtonUp("Fire1"))
         {
             StopAttack01();
         }
         
-        if (Input.GetButtonDown("Attack02"))
+        if (Input.GetButtonDown("Fire2"))
         {
             StartAttack02();
         }
-        if (Input.GetButtonUp("Attack02"))
+        if (Input.GetButtonUp("Fire2"))
         {
             StopAttack02();
         }
 
-        if (Input.GetButtonDown("Shield01"))
+        if (Input.GetButtonDown("Fire3"))
         {
-            
-        }
-        if (Input.GetButtonDown("Shield02"))
-        {
-            
+            _shield.ToggleShield();
         }
     }
 
