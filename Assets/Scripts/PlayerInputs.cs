@@ -21,12 +21,14 @@ public class PlayerInputs : MonoBehaviour
     private bool jump = false;
 
     private PlayerShield _shield;
+    private PlayerTriggerCollision _triggerCollision;
     
     private void Awake()
     {
         _movement = GetComponent<PlayerMovement>();
         _body = GetComponent<Rigidbody2D>();
         _shield = GetComponent<PlayerShield>();
+        _triggerCollision = GetComponent<PlayerTriggerCollision>();
     }
     void Update()
     {
@@ -59,6 +61,15 @@ public class PlayerInputs : MonoBehaviour
         if (Input.GetButtonDown("Fire3"))
         {
             _shield.ToggleShield();
+        }
+
+        if (Input.GetAxis("Vertical") >= 0.1)
+        {
+            _triggerCollision.UseStair(true);
+        }
+        if (Input.GetAxis("Vertical") <= -0.1)
+        {
+            _triggerCollision.UseStair(false);
         }
     }
 

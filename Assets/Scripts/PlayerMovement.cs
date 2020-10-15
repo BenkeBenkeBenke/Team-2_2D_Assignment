@@ -23,12 +23,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask whatIsGround;
     private const float groundedRadius = 0.2f;
+
+    private PlayerTriggerCollision _triggerCollision;
     
     private void Awake()
     {
         _transform = transform;
         _body = GetComponent<Rigidbody2D>();
-        
+        _triggerCollision = GetComponent<PlayerTriggerCollision>();
         /*
         if (OnLandEvent == null)
         {
@@ -52,14 +54,15 @@ public class PlayerMovement : MonoBehaviour
         {
             if (colliders[i].gameObject != gameObject)
             {
-                //Debug.Log(colliders[i].gameObject);
+                //Debug.Log("Standing on GameObject: " + colliders[i].gameObject + " - Tag: " + colliders[i].gameObject.tag);
                 isGrounded = true;
+                //_triggerCollision.isOnStairs = false;
                 /*
                 if (!wasGrounded)
                 {
                     OnLandEvent.Invoke();
                 } 
-                */   
+                */
             }
         }
         //MoveInDirection();
@@ -86,4 +89,33 @@ public class PlayerMovement : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
     }
+    /*
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        
+         _stairTrigger = other.gameObject;
+         Collider2D thisStairCollider;
+         
+        if (_stairTrigger.tag == "StairTrigger")
+        {
+            thisStairCollider = _stairTrigger.transform.Find("StairCollider").GetComponent<Collider2D>();
+            isOnStairs = true;
+            //thisStairCollider.enabled = true;
+        }
+        else
+        {
+            isOnStairs = false;
+            thisStairCollider.enabled = false;
+        }
+      
+        Debug.Log("isOnStairs = " + isOnStairs);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        isOnStairs = false;
+
+        Debug.Log("isOnStairs = " + isOnStairs);
+    }
+    */
 }
