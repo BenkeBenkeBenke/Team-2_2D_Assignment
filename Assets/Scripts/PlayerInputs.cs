@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -22,6 +23,7 @@ public class PlayerInputs : MonoBehaviour
 
     private PlayerShield _shield;
     private PlayerTriggerCollision _triggerCollision;
+    private PlayerAttackResource _attackResource;
     
     private void Awake()
     {
@@ -29,6 +31,7 @@ public class PlayerInputs : MonoBehaviour
         _body = GetComponent<Rigidbody2D>();
         _shield = GetComponent<PlayerShield>();
         _triggerCollision = GetComponent<PlayerTriggerCollision>();
+        _attackResource = GetComponent<PlayerAttackResource>();
     }
     void Update()
     {
@@ -113,6 +116,16 @@ public class PlayerInputs : MonoBehaviour
 
     private void FireProjectile(GameObject projectileType)
     {
-        var newProjectile = Instantiate(projectileType, projectileOrigin.transform.position, projectileOrigin.transform.rotation);
+        if (projectileType == projectileRed && _attackResource.redResource >= _attackResource.redCost)
+        {
+            _attackResource.UseRedResource();
+            var newProjectile = Instantiate(projectileType, projectileOrigin.transform.position, projectileOrigin.transform.rotation);    
+        }
+        if (projectileType == projectileBlue && _attackResource.blueResource >= _attackResource.blueCost)
+        {
+            _attackResource.UseBlueResource();
+            var newProjectile = Instantiate(projectileType, projectileOrigin.transform.position, projectileOrigin.transform.rotation);    
+        }
+        
     }
 }
