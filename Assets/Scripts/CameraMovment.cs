@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraMovment : MonoBehaviour
 {
-    public GameObject Player;
+    private GameObject[] Player;
     public GameObject bg_House;
     public GameObject bg_Sky;
 
@@ -18,14 +18,15 @@ public class CameraMovment : MonoBehaviour
 
     void Start()
     {
+        Player = GameObject.FindGameObjectsWithTag("Player");
         _transform = transform;
-        _transform.position = Player.transform.position + offset;
+        _transform.position = Player[0].transform.position + offset;
     }
 
     void Update()
     {
         Vector3 PlayerMovmentTarget = new Vector3(Input.GetAxis("Horizontal") * 2, 0,0);
-        Vector3 targetPosition = Player.transform.TransformPoint(offset + PlayerMovmentTarget);       
+        Vector3 targetPosition = Player[0].transform.TransformPoint(offset + PlayerMovmentTarget);       
         _transform.position = Vector3.SmoothDamp(_transform.position, targetPosition, ref _velocity, smoothTime);
 
         if(sliding_BG)
