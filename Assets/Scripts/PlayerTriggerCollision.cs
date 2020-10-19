@@ -6,9 +6,8 @@ using UnityEngine;
 public class PlayerTriggerCollision : MonoBehaviour
 {
     public bool isOnStairs;
-    public GameObject _stairTrigger;
-    
-    private Collider2D _thisStairCollider;
+
+    public Collider2D _thisStairCollider;
     private PlayerHealth _playerHealth;
 
     private void Start()
@@ -19,25 +18,25 @@ public class PlayerTriggerCollision : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "StairTriggerArea")
-        {
-            _stairTrigger = other.gameObject;
-            _thisStairCollider = _stairTrigger.transform.Find("StairCollider").GetComponent<Collider2D>();
-            isOnStairs = true;
-            //thisStairCollider.enabled = true;
-        }
 
-        if (other.gameObject.tag == "StairTriggerTop")
+        if (other.gameObject.tag == "StairTriggerArea" || other.gameObject.tag == "StairTriggerTop")
         {
-            isOnStairs = true;
-            _thisStairCollider = _stairTrigger.transform.Find("StairCollider").GetComponent<Collider2D>();
-            _thisStairCollider.enabled = true;
+            _thisStairCollider = other.transform.parent.Find("StairCollider").GetComponent<Collider2D>();
+            
+            if (other.gameObject.tag == "StairTriggerArea")
+            {
+                isOnStairs = true;
+            }
+
+            if (other.gameObject.tag == "StairTriggerTop")
+            {
+                _thisStairCollider.enabled = true;
+                isOnStairs = true;
+            }
         }
-        
         
         if (other.gameObject.tag == "Red" || other.gameObject.tag == "Blue")
         {
-            //_playerHealth.TakeDamage(other.gameObject.GetComponent<DoDamage>().damage);
             _playerHealth.TakeDamage(1);
         }
         
@@ -47,6 +46,7 @@ public class PlayerTriggerCollision : MonoBehaviour
     {
         if (other.gameObject.tag == "StairTriggerArea")
         {
+            Debug.Log("Exit Stair");
             isOnStairs = false;
             _thisStairCollider.enabled = false;
         }
