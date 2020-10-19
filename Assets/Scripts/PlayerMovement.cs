@@ -25,7 +25,10 @@ public class PlayerMovement : MonoBehaviour
     private const float groundedRadius = 0.2f;
 
     private PlayerTriggerCollision _triggerCollision;
-    
+
+    //Animation
+    private Animator _animator;                      //Animator for the player
+
     private void Awake()
     {
         _transform = transform;
@@ -37,6 +40,9 @@ public class PlayerMovement : MonoBehaviour
             OnLandEvent = new UnityEvent();
         }
         */
+
+        //ref to animator to update when moving
+        _animator = this.gameObject.transform.GetChild(1).GetComponent<Animator>();
     }
     
     private void FixedUpdate()
@@ -79,11 +85,15 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = false;
             _body.AddForce(new Vector2(0f, jumpPower));    
         }
-        
+
         //transform.position = new Vector3(Mathf.MoveTowards(transform.position.x, transform.position.x + (movementInput.x * moveSpeed), accelerationSpeed * Time.fixedDeltaTime), 0, 0);
         //transform.position = new Vector3(transform.position.x + movementInput.x * moveSpeed, 0, 0);
         //currentSpeed = Mathf.MoveTowards(currentSpeed, movementInput.x * moveSpeed, accelerationSpeed * Time.fixedDeltaTime);
         //_body.AddForce(Vector2.right * movementInput.x, ForceMode2D.Force);
+
+        // Update animation
+        _animator.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
+        _animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
     }
 
     void OnCollisionEnter2D(Collision2D collision)
