@@ -9,18 +9,19 @@ public class PlayerShield : MonoBehaviour
     private GameObject _shieldRed;
     private GameObject _shieldBlue;
 
+    private PlayerAttackResource _attackResource;
     private void Awake()
     {
         _shieldRed = GameObject.Find("ShieldRed");
         _shieldBlue = GameObject.Find("ShieldBlue");
         _shieldBlue.SetActive(false);
+        _attackResource = gameObject.GetComponent<PlayerAttackResource>();
     }
 
     public void ToggleShield()
     {
         if (usingShieldRed == true)
         {
-            Debug.Log("asd");
             usingShieldRed = false;
             _shieldRed.SetActive(false);
             _shieldBlue.SetActive(true);
@@ -32,13 +33,4 @@ public class PlayerShield : MonoBehaviour
             _shieldBlue.SetActive(false);            
         }
     }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.tag == "Red")
-        {
-            
-        }    
-    }
-    
 }

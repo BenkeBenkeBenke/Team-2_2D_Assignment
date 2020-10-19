@@ -30,7 +30,7 @@ public class PlayerInputs : MonoBehaviour
         _movement = GetComponent<PlayerMovement>();
         _body = GetComponent<Rigidbody2D>();
         _shield = GetComponent<PlayerShield>();
-        _triggerCollision = GetComponent<PlayerTriggerCollision>();
+        _triggerCollision = transform.Find("CollisionDetection").GetComponent<PlayerTriggerCollision>();
         _attackResource = GetComponent<PlayerAttackResource>();
     }
     void Update()

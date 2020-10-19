@@ -29,7 +29,11 @@ public class PlayerAttackResource : MonoBehaviour
     {
         redResource = redResource - redCost;
     }
-    
+
+    public void AddRedResource(float addAdmount)
+    {
+        redResource = redResource + addAdmount;
+    }
     private IEnumerator ChargeRedResource(float chargeTime)
     {
         while (true)
@@ -48,6 +52,10 @@ public class PlayerAttackResource : MonoBehaviour
         blueResource = blueResource - blueCost;
     }
 
+    public void AddBlueResource(float addAmount)
+    {
+        blueResource = blueResource + addAmount;
+    }
     private IEnumerator ChargeBlueResource(float chargeTime)
     {
         while (true)
