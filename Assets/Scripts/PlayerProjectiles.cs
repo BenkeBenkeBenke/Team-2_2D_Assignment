@@ -9,6 +9,7 @@ public class PlayerProjectiles : MonoBehaviour
 {
     public float speed = 10.0f;
     public float lifespan = 2.0f;
+    public float damage = 10f;
 
     [NonSerialized] public Vector2 initialSpeed;
     
