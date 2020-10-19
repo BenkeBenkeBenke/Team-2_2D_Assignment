@@ -24,7 +24,10 @@ public class PlayerInputs : MonoBehaviour
     private PlayerShield _shield;
     private PlayerTriggerCollision _triggerCollision;
     private PlayerAttackResource _attackResource;
-    
+
+    //Animation
+    private Animator _animator;                      //Animator for the player
+
     private void Awake()
     {
         _movement = GetComponent<PlayerMovement>();
@@ -32,6 +35,9 @@ public class PlayerInputs : MonoBehaviour
         _shield = GetComponent<PlayerShield>();
         _triggerCollision = transform.Find("CollisionDetection").GetComponent<PlayerTriggerCollision>();
         _attackResource = GetComponent<PlayerAttackResource>();
+
+        //ref to animator to update when moving
+        _animator = this.gameObject.transform.GetChild(1).GetComponent<Animator>();
     }
     void Update()
     {
@@ -46,19 +52,29 @@ public class PlayerInputs : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             StartAttack01();
+
+            //Start animation
+            _animator.SetBool("Fire", true);
         }
         if (Input.GetButtonUp("Fire1"))
         {
             StopAttack01();
+
+            //Stop animation
+            _animator.SetBool("Fire", false);
         }
         
         if (Input.GetButtonDown("Fire2"))
         {
             StartAttack02();
+            //Start animation
+            _animator.SetBool("Fire", true);
         }
         if (Input.GetButtonUp("Fire2"))
         {
             StopAttack02();
+            //Stop animation
+            _animator.SetBool("Fire", false);
         }
 
         if (Input.GetButtonDown("Fire3"))

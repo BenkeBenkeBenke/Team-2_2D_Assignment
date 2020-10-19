@@ -92,8 +92,8 @@ public class PlayerMovement : MonoBehaviour
         //_body.AddForce(Vector2.right * movementInput.x, ForceMode2D.Force);
 
         // Update animation
-        _animator.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
-        _animator.SetFloat("Vertical", Input.GetAxis("Vertical"));
+        _animator.SetFloat("Body_Velocity_Horizontal", Input.GetAxis("Horizontal"));
+        _animator.SetFloat("Body_Velocity_Vertical", Input.GetAxis("Vertical"));
     }
 
     void OnCollisionEnter2D(Collision2D collision)
