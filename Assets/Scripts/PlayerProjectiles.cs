@@ -42,6 +42,11 @@ public class PlayerProjectiles : MonoBehaviour
     {
         Debug.Log(other);
         //Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), _player.GetComponent<Collider2D>());
-        //Destroy(gameObject);
+
+        if (other.gameObject.tag == gameObject.tag)
+        {
+            Destroy(other.gameObject);
+        }
+        Destroy(gameObject);
     }
 }

@@ -135,14 +135,12 @@ public class PlayerInputs : MonoBehaviour
         if (projectileType == projectileRed && _attackResource.redResource >= _attackResource.redCost)
         {
             _attackResource.UseRedResource();
-            var newProjectile = Instantiate(projectileType, projectileOrigin.transform.position, projectileOrigin.transform.rotation);
-            newProjectile.GetComponent<PlayerProjectiles>().SetInitialSpeed(_body.velocity);
+            var newProjectile = Instantiate(projectileType, projectileOrigin.transform.position, projectileOrigin.transform.rotation);    
         }
         if (projectileType == projectileBlue && _attackResource.blueResource >= _attackResource.blueCost)
         {
             _attackResource.UseBlueResource();
-            var newProjectile = Instantiate(projectileType, projectileOrigin.transform.position, projectileOrigin.transform.rotation);
-            newProjectile.GetComponent<PlayerProjectiles>().SetInitialSpeed(_body.velocity);
+            var newProjectile = Instantiate(projectileType, projectileOrigin.transform.position, projectileOrigin.transform.rotation);    
         }
         
     }
