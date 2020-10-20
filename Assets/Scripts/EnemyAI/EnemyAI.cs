@@ -6,7 +6,6 @@ public class EnemyAI : MonoBehaviour
 {
     #region Public Variables
     public bool RangedAI;
-    public bool Boss;
 
     public float health;
     public bool blueShield;
@@ -33,7 +32,7 @@ public class EnemyAI : MonoBehaviour
 
     private Animator anim;
     private float distance;
-    public bool attackMode;
+    private bool attackMode;
     
     private bool cooling;
     private float intTimer;
@@ -189,26 +188,6 @@ public class EnemyAI : MonoBehaviour
                 Die();
             }
         
-    }
-
-    public void EnemyHeal(float healamount)
-    {
-        if (!Boss)
-        {
-            health = health + healamount;
-            if (health >= 100)
-            {
-                
-                    health = 100;
-                
-            }
-        }
-        else if (Boss)
-        {
-            health = health + healamount;
-         
-        }
-      
     }
 
     public void  Die()
