@@ -45,6 +45,7 @@ public class HotZoneCheck : MonoBehaviour
             gameObject.SetActive(false);
             enemyAiScript.triggerArea.SetActive(true);
             enemyAiScript.inRange = false;
+          
             enemyAiScript.SelectTarget();
         }
     }

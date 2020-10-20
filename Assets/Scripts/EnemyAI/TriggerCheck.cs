@@ -16,13 +16,19 @@ public class TriggerCheck : MonoBehaviour
     {
         if (col.gameObject.CompareTag ("Player"))
         {
-            gameObject.SetActive(false);
-            enemyAiscript.target = col.transform;
-            enemyAiscript.inRange = true;
-            enemyAiscript.hotZone.SetActive(true);
-            inRange = true;
+            if (!enemyAiscript.Civilian)
+            {
+                gameObject.SetActive(false);
+                enemyAiscript.target = col.transform;
+                enemyAiscript.inRange = true;
+                enemyAiscript.hotZone.SetActive(true);
+                inRange = true;
+            }
+         
         }
     }
+
+
 
     public void Hej()
     {

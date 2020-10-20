@@ -8,6 +8,9 @@ public class EnemyAI : MonoBehaviour
     #region Public Variables
     public bool RangedAI;
     public bool Boss;
+    public bool StaticAI;
+    public bool Civilian;
+    public bool Bomber;
 
     public float health;
     public float Hitpoints;
@@ -29,6 +32,9 @@ public class EnemyAI : MonoBehaviour
     public GameObject hotZone;
     public GameObject triggerArea;
     public EnemyHealthbar Healthbar;
+    public GameObject deathFireAnimation;
+    public GameObject redShieldArt;
+    public GameObject blueShieldArt;
 
     #endregion
 
@@ -60,7 +66,7 @@ public class EnemyAI : MonoBehaviour
     {
         Healthbar.SetHealth(Hitpoints, health);
 
-        if (!attackMode)
+        if (!attackMode && !StaticAI)
         {
             Move();
         }
@@ -75,6 +81,18 @@ public class EnemyAI : MonoBehaviour
 
             AILogic();
         }
+
+        if (blueShield)
+        {
+            blueShieldArt.SetActive(true);
+            redShieldArt.SetActive(false);
+        }
+
+        if (redShield)
+        {
+            redShieldArt.SetActive(true);
+            blueShieldArt.SetActive(false);
+        }
     }
 
     void AILogic()
@@ -84,10 +102,17 @@ public class EnemyAI : MonoBehaviour
         if(distance > attackDistance)
         {
             StopAttack();
+            anim.SetBool("Walk", true);
         }
-        else if(attackDistance >= distance && cooling == false)
+        else if(attackDistance >= distance && cooling == false && Civilian == false && Bomber == false)
         {
             Attack();
+        }
+
+        else if(0.3 >= distance && Civilian == false && Bomber == true)
+        {
+            Die();
+            Bomber = false;
         }
 
         if (cooling)
@@ -117,19 +142,22 @@ public class EnemyAI : MonoBehaviour
 
         if (RangedAI)
         {
+
             GameObject newMissile = Instantiate(Missile, MissileSpawn.position, Quaternion.identity);
 
             newMissile.GetComponent<Rigidbody2D>().velocity = new Vector2(MissleSpeed * moveSpeed * Time.fixedDeltaTime, 0f);
         }
 
+
         TriggerCooling();
 
     }
 
-    void StopAttack()
+    public void StopAttack()
     {
         cooling = false;
         attackMode = false;
+        inRange = false;
         anim.SetBool("Attack1", false);
     }
 
@@ -221,6 +249,7 @@ public class EnemyAI : MonoBehaviour
 
     public void  Die()
     {
+        GameObject fireAnim = Instantiate(deathFireAnimation, transform.position, Quaternion.identity);
         anim.SetBool("Dead", true);
         Destroy(gameObject);
     }

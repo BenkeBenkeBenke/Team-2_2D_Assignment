@@ -8,9 +8,11 @@ public class EnemyHealth : MonoBehaviour
     private PlayerProjectiles projectileScript;
     private bool redShield;
     private bool blueShield;
+    
     void Awake()
     {
         enemyAiScript = GetComponentInParent<EnemyAI>();
+        
         
     }
 
