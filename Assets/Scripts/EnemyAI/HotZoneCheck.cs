@@ -16,12 +16,12 @@ public class HotZoneCheck : MonoBehaviour
     void Awake()
     {
         enemyAiScript = GetComponentInParent<EnemyAI>();
-        anim = GetComponentInParent<Animator>();
+        anim = this.gameObject.transform.parent.GetChild(1).GetComponentInParent<Animator>();
     }
 
     private void Update()
     {
-        if(inRange && !anim.GetCurrentAnimatorStateInfo(0).IsName("Enemy_Attack"))
+        if(inRange && !anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
         {
             enemyAiScript.Flip();
         }

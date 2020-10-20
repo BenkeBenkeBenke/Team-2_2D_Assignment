@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
@@ -39,6 +40,7 @@ public class EnemyAI : MonoBehaviour
     
     private bool cooling;
     private float intTimer;
+    private Transform Player;
     #endregion
 
     
@@ -47,8 +49,9 @@ public class EnemyAI : MonoBehaviour
         Hitpoints = health;
         SelectTarget();
         intTimer = timer;
-        anim = GetComponent<Animator>();
+        anim = this.gameObject.transform.GetChild(1).GetComponent<Animator>();
         Healthbar.SetHealth(Hitpoints, health);
+        Player = GameObject.FindWithTag("Player").transform;
 
     }
 
@@ -61,12 +64,11 @@ public class EnemyAI : MonoBehaviour
         {
             Move();
         }
-        if (!InsideOfLimits() && !inRange && !anim.GetCurrentAnimatorStateInfo(0).IsName("Enemy_Attack"))
+
+        if (!InsideOfLimits() && !inRange && !anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
         {
             SelectTarget();
         }
-
-    
 
         if(inRange)
         {
@@ -77,11 +79,10 @@ public class EnemyAI : MonoBehaviour
 
     void AILogic()
     {
-        distance = Vector2.Distance(transform.position, target.position);
+        distance = Vector2.Distance(transform.position, Player.position);
 
         if(distance > attackDistance)
         {
-            
             StopAttack();
         }
         else if(attackDistance >= distance && cooling == false)
@@ -92,14 +93,14 @@ public class EnemyAI : MonoBehaviour
         if (cooling)
         {
             Cooldown();
-            anim.SetBool("Attack", false);
         }
     }
 
     void Move()
     {
-        anim.SetBool("canWalk", true);
-        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Enemy_attack"))
+        anim.SetBool("Walk", true);
+
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
         {
             Vector2 targetPostion = new Vector2(target.position.x, transform.position.y);
             transform.position = Vector2.MoveTowards(transform.position, targetPostion, moveSpeed * Time.deltaTime);
@@ -111,8 +112,7 @@ public class EnemyAI : MonoBehaviour
         timer = intTimer;
         attackMode = true;
 
-        anim.SetBool("canWalk", false);
-        anim.SetBool("Attack", true);
+        anim.SetBool("Attack1", true);
 
         if (RangedAI)
         {
@@ -129,7 +129,7 @@ public class EnemyAI : MonoBehaviour
     {
         cooling = false;
         attackMode = false;
-        anim.SetBool("Attack", false);
+        anim.SetBool("Attack1", false);
     }
 
  
@@ -187,8 +187,9 @@ public class EnemyAI : MonoBehaviour
 
     public void EnemyTakeDamage(float damage)
     {
-       
-            health = health - damage;
+        anim.SetBool("TakeHit", true);
+
+        health = health - damage;
             Healthbar.SetHealth(Hitpoints, health);
         if (health <= 0)
             {
@@ -219,6 +220,7 @@ public class EnemyAI : MonoBehaviour
 
     public void  Die()
     {
+        anim.SetBool("Dead", true);
         Destroy(gameObject);
     }
 }
