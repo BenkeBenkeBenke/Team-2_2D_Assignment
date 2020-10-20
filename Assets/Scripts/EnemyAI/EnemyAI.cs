@@ -113,6 +113,7 @@ public class EnemyAI : MonoBehaviour
         attackMode = true;
 
         anim.SetBool("Attack1", true);
+        anim.SetBool("Walk", false);
 
         if (RangedAI)
         {
