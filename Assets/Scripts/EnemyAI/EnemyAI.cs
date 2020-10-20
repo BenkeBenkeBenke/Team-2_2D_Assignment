@@ -9,6 +9,7 @@ public class EnemyAI : MonoBehaviour
     public bool Boss;
 
     public float health;
+    public float Hitpoints;
     public bool blueShield;
     public bool redShield;
     public float attackDistance;
@@ -26,6 +27,7 @@ public class EnemyAI : MonoBehaviour
 
     public GameObject hotZone;
     public GameObject triggerArea;
+    public EnemyHealthbar Healthbar;
 
     #endregion
 
@@ -42,15 +44,18 @@ public class EnemyAI : MonoBehaviour
     
     void Awake()
     {
+        Hitpoints = health;
         SelectTarget();
         intTimer = timer;
         anim = GetComponent<Animator>();
+        Healthbar.SetHealth(Hitpoints, health);
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        Healthbar.SetHealth(Hitpoints, health);
 
         if (!attackMode)
         {
@@ -184,7 +189,8 @@ public class EnemyAI : MonoBehaviour
     {
        
             health = health - damage;
-            if (health <= 0)
+            Healthbar.SetHealth(Hitpoints, health);
+        if (health <= 0)
             {
                 Die();
             }
