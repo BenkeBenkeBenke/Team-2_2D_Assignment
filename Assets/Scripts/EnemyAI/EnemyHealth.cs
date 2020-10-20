@@ -11,8 +11,7 @@ public class EnemyHealth : MonoBehaviour
     void Awake()
     {
         enemyAiScript = GetComponentInParent<EnemyAI>();
-        redShield = enemyAiScript.redShield;
-        blueShield = enemyAiScript.blueShield;
+        
     }
 
     // Update is called once per frame
@@ -23,7 +22,7 @@ public class EnemyHealth : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D col)
     {
-        if (redShield)
+        if (enemyAiScript.redShield)
         {
             if (col.gameObject.CompareTag("Red"))
             {
@@ -36,7 +35,7 @@ public class EnemyHealth : MonoBehaviour
             }
         }
 
-        else if (blueShield)
+        else if (enemyAiScript.blueShield)
         {
             if (col.gameObject.CompareTag("Blue"))
             {
