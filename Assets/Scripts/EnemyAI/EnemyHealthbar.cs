@@ -13,9 +13,9 @@ public class EnemyHealthbar : MonoBehaviour
 
     public void SetHealth(float health, float maxHealth)
     {
-        Slider.gameObject.SetActive(health < maxHealth);
-        Slider.value = health;
-        Slider.maxValue = maxHealth;
+        Slider.gameObject.SetActive(health > maxHealth);
+        Slider.value = maxHealth;
+        Slider.maxValue = health;
 
         Slider.fillRect.GetComponentInChildren<Image>().color = Color.Lerp(Low, High, Slider.normalizedValue);
 
@@ -23,5 +23,7 @@ public class EnemyHealthbar : MonoBehaviour
     void Update()
     {
         Slider.transform.position = Camera.main.WorldToScreenPoint(transform.parent.position + Offset);
+
+        
     }
 }
