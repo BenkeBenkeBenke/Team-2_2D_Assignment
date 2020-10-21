@@ -27,7 +27,8 @@ public class PlayerMovement : MonoBehaviour
     private PlayerTriggerCollision _triggerCollision;
 
     //Animation
-    private Animator _animator;                      //Animator for the player
+    private Animator _animatorRED;                      //Animator for the player
+    private Animator _animatorBlue;                      //Animator for the player
 
     private void Awake()
     {
@@ -42,7 +43,8 @@ public class PlayerMovement : MonoBehaviour
         */
 
         //ref to animator to update when moving
-        _animator = this.gameObject.transform.GetChild(1).GetComponent<Animator>();
+        _animatorRED = this.gameObject.transform.GetChild(1).GetComponent<Animator>();
+        _animatorBlue = this.gameObject.transform.GetChild(2).GetComponent<Animator>();
     }
     
     private void FixedUpdate()
@@ -92,8 +94,10 @@ public class PlayerMovement : MonoBehaviour
         //_body.AddForce(Vector2.right * movementInput.x, ForceMode2D.Force);
 
         // Update animation
-        _animator.SetFloat("Body_Velocity_Horizontal", Input.GetAxis("Horizontal"));
-        _animator.SetFloat("Body_Velocity_Vertical", Input.GetAxis("Vertical"));
+        _animatorRED.SetFloat("Body_Velocity_Horizontal", Input.GetAxis("Horizontal"));
+        _animatorRED.SetFloat("Body_Velocity_Vertical", Input.GetAxis("Vertical"));
+        _animatorBlue.SetFloat("Body_Velocity_Horizontal", Input.GetAxis("Horizontal"));
+        _animatorBlue.SetFloat("Body_Velocity_Vertical", Input.GetAxis("Vertical"));
     }
 
     void OnCollisionEnter2D(Collision2D collision)

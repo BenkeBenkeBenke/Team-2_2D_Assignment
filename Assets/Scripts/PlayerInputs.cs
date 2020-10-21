@@ -10,7 +10,7 @@ public class PlayerInputs : MonoBehaviour
     public GameObject projectileOrigin;
     public GameObject projectileRed;
     public GameObject projectileBlue;
-    
+
     public float timeBetweenAttacks = 1.0f;
     private float timeSinceLastAttack;
 
@@ -26,7 +26,10 @@ public class PlayerInputs : MonoBehaviour
     private PlayerAttackResource _attackResource;
 
     //Animation
-    private Animator _animator;                      //Animator for the player
+    [Header("Animation")]
+    private Animator _animatorRED;                      //Animator for the player
+    private Animator _animatorBLUE;                      //Animator for the player
+    private ParticleSystem _CastSpel_PS;                      //Animator for the player
 
     private void Awake()
     {
@@ -37,7 +40,13 @@ public class PlayerInputs : MonoBehaviour
         _attackResource = GetComponent<PlayerAttackResource>();
 
         //ref to animator to update when moving
-        _animator = this.gameObject.transform.GetChild(1).GetComponent<Animator>();
+        _animatorRED = this.gameObject.transform.GetChild(1).GetComponent<Animator>();
+        _animatorBLUE = this.gameObject.transform.GetChild(2).GetComponent<Animator>();
+
+        //ref to particle system
+        _CastSpel_PS = this.gameObject.transform.GetChild(3).GetComponent<ParticleSystem>();
+
+
     }
     void Update()
     {
@@ -54,27 +63,33 @@ public class PlayerInputs : MonoBehaviour
             StartAttack01();
 
             //Start animation
-            _animator.SetBool("Fire", true);
+            _animatorRED.SetBool("Fire", true);
+            _animatorBLUE.SetBool("Fire", true);
+
+            
         }
         if (Input.GetButtonUp("Fire1"))
         {
             StopAttack01();
 
             //Stop animation
-            _animator.SetBool("Fire", false);
+            _animatorRED.SetBool("Fire", false);
+            _animatorBLUE.SetBool("Fire", false);
         }
         
         if (Input.GetButtonDown("Fire2"))
         {
             StartAttack02();
             //Start animation
-            _animator.SetBool("Fire", true);
+            _animatorRED.SetBool("Fire", true);
+            _animatorBLUE.SetBool("Fire", true);
         }
         if (Input.GetButtonUp("Fire2"))
         {
             StopAttack02();
             //Stop animation
-            _animator.SetBool("Fire", false);
+            _animatorRED.SetBool("Fire", false);
+            _animatorBLUE.SetBool("Fire", false);
         }
 
         if (Input.GetButtonDown("Fire3"))
@@ -134,11 +149,14 @@ public class PlayerInputs : MonoBehaviour
     {
         if (projectileType == projectileRed && _attackResource.redResource >= _attackResource.redCost)
         {
+            //fire particles
+            _CastSpel_PS.Play();
             _attackResource.UseRedResource();
             var newProjectile = Instantiate(projectileType, projectileOrigin.transform.position, projectileOrigin.transform.rotation);    
         }
         if (projectileType == projectileBlue && _attackResource.blueResource >= _attackResource.blueCost)
         {
+            _CastSpel_PS.Play();
             _attackResource.UseBlueResource();
             var newProjectile = Instantiate(projectileType, projectileOrigin.transform.position, projectileOrigin.transform.rotation);    
         }
