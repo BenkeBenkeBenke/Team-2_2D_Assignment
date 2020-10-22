@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (colliders[i].gameObject != gameObject)
             {
-                //Debug.Log("Standing on GameObject: " + colliders[i].gameObject + " - Tag: " + colliders[i].gameObject.tag);
+                Debug.Log("Standing on GameObject: " + colliders[i].gameObject + " - Tag: " + colliders[i].gameObject.tag);
                 isGrounded = true;
                 //_triggerCollision.isOnStairs = false;
                 /*
@@ -84,8 +84,8 @@ public class PlayerMovement : MonoBehaviour
         
         if (isGrounded == true && jump == true)
         {
+            _body.AddForce(new Vector2(0f, jumpPower));
             isGrounded = false;
-            _body.AddForce(new Vector2(0f, jumpPower));    
         }
 
         //transform.position = new Vector3(Mathf.MoveTowards(transform.position.x, transform.position.x + (movementInput.x * moveSpeed), accelerationSpeed * Time.fixedDeltaTime), 0, 0);
