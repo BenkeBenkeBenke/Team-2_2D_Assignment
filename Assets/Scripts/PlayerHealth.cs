@@ -16,5 +16,6 @@ public class PlayerHealth : MonoBehaviour
     public void Die()
     {
         Debug.Log("YOU ARE NOW DEAD!!");
+        gameObject.GetComponent<PlayerRespawn>().RespawnPlayer();
     }
 }

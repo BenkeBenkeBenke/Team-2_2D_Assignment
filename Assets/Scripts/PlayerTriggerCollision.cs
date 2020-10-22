@@ -8,17 +8,20 @@ public class PlayerTriggerCollision : MonoBehaviour
     public bool isOnStairs;
 
     public Collider2D _thisStairCollider;
+    
     private PlayerHealth _playerHealth;
+    private PlayerRespawn _playerRespawn;
 
     private void Start()
     {
         //_playerHealth = gameObject.GetComponent<PlayerHealth>();
         _playerHealth = GetComponentInParent<PlayerHealth>();
+        _playerRespawn = GetComponentInParent<PlayerRespawn>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-
+        // Use stairs
         if (other.gameObject.tag == "StairTriggerArea" || other.gameObject.tag == "StairTriggerTop")
         {
             _thisStairCollider = other.transform.parent.Find("StairCollider").GetComponent<Collider2D>();
@@ -34,10 +37,21 @@ public class PlayerTriggerCollision : MonoBehaviour
                 isOnStairs = true;
             }
         }
-        
+        // Take damage from projectiles
         if (other.gameObject.tag == "Red" || other.gameObject.tag == "Blue")
         {
             _playerHealth.TakeDamage(1);
+        }
+        
+        // Activate checkpoints and set new respawn location
+        if (other.gameObject.tag == "Respawn")
+        {
+            _playerRespawn.respawnLocation = other.gameObject.transform.position;
+        }
+        // Respawn player if killed by deathZone
+        if (other.gameObject.tag == "KillZone")
+        {
+            _playerRespawn.RespawnPlayer();
         }
         
     }
