@@ -46,7 +46,7 @@ public class PlayerTriggerCollision : MonoBehaviour
         // Activate checkpoints and set new respawn location
         if (other.gameObject.tag == "Respawn")
         {
-            _playerRespawn.respawnLocation = other.gameObject.transform.position;
+            _playerRespawn.SetActiveCheckpoint(other.gameObject);
         }
         // Respawn player if killed by deathZone
         if (other.gameObject.tag == "KillZone")
