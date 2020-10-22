@@ -149,7 +149,6 @@ public class PlayerInputs : MonoBehaviour
     {
         if (projectileType == projectileRed && _attackResource.redResource >= _attackResource.redCost)
         {
-            //fire particles
             _CastSpel_PS.Play();
             _attackResource.UseRedResource();
             var newProjectile = Instantiate(projectileType, projectileOrigin.transform.position, projectileOrigin.transform.rotation);    
