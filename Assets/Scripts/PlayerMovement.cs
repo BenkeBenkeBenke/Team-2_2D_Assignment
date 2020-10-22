@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (colliders[i].gameObject != gameObject)
             {
-                Debug.Log("Standing on GameObject: " + colliders[i].gameObject + " - Tag: " + colliders[i].gameObject.tag);
+                //Debug.Log("Standing on GameObject: " + colliders[i].gameObject + " - Tag: " + colliders[i].gameObject.tag);
                 isGrounded = true;
                 //_triggerCollision.isOnStairs = false;
                 /*
