@@ -33,6 +33,10 @@ public class PlayerAttackResource : MonoBehaviour
     public void AddRedResource(float addAdmount)
     {
         redResource = redResource + addAdmount;
+        if (redResource > 100)
+        {
+            redResource = 100;
+        }
     }
     private IEnumerator ChargeRedResource(float chargeTime)
     {
@@ -55,6 +59,10 @@ public class PlayerAttackResource : MonoBehaviour
     public void AddBlueResource(float addAmount)
     {
         blueResource = blueResource + addAmount;
+        if (blueResource > 100)
+        {
+            blueResource = 100;
+        }
     }
     private IEnumerator ChargeBlueResource(float chargeTime)
     {

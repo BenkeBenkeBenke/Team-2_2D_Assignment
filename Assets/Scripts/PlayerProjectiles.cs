@@ -38,15 +38,16 @@ public class PlayerProjectiles : MonoBehaviour
         Destroy(gameObject, lifespan);
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log(other);
         //Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), _player.GetComponent<Collider2D>());
-
+        /*
         if (other.gameObject.tag == gameObject.tag)
         {
             Destroy(other.gameObject);
         }
+        */
         Destroy(gameObject);
     }
 }

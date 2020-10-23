@@ -41,6 +41,7 @@ public class PlayerTriggerCollision : MonoBehaviour
         if (other.gameObject.tag == "Red" || other.gameObject.tag == "Blue")
         {
             _playerHealth.TakeDamage(1);
+            Destroy(other.gameObject);
         }
         
         // Activate checkpoints and set new respawn location

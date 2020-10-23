@@ -20,14 +20,14 @@ public class EnemyProjectile : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter2D(Collision2D col)
+    private void OnTriggerEnter2D(Collider2D col)
     {
+        /*
         if (redMissile)
         {
             if (col.gameObject.CompareTag("Blue"))
             {
                 col.gameObject.GetComponentInParent<PlayerHealth>().TakeDamage(damage);
-
                 Destroy(gameObject);
             }
         }
@@ -40,6 +40,9 @@ public class EnemyProjectile : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+        
+        Destroy(gameObject);
+        */
        
     }
 

@@ -24,11 +24,13 @@ public class PlayerShieldCollision : MonoBehaviour
             if (redShield == true)
             {
                 _attackResource.AddRedResource(onCollisionAdd);
+                Debug.Log("Shield Collision RED");
             }
 
             if (redShield == false)
             {
                 _attackResource.AddBlueResource(onCollisionAdd);
+                Debug.Log("Shield Collision BLUE");
             }
             Destroy(other.gameObject);
         }
