@@ -151,13 +151,15 @@ public class PlayerInputs : MonoBehaviour
         {
             _CastSpel_PS.Play();
             _attackResource.UseRedResource();
-            var newProjectile = Instantiate(projectileType, projectileOrigin.transform.position, projectileOrigin.transform.rotation);    
+            var newProjectile = Instantiate(projectileType, projectileOrigin.transform.position, projectileOrigin.transform.rotation);   
+            newProjectile.GetComponent<PlayerProjectiles>().SetInitialSpeed(_body.velocity);
         }
         if (projectileType == projectileBlue && _attackResource.blueResource >= _attackResource.blueCost)
         {
             _CastSpel_PS.Play();
             _attackResource.UseBlueResource();
             var newProjectile = Instantiate(projectileType, projectileOrigin.transform.position, projectileOrigin.transform.rotation);    
+            newProjectile.GetComponent<PlayerProjectiles>().SetInitialSpeed(_body.velocity);
         }
         
     }
