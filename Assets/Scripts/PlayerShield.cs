@@ -35,6 +35,7 @@ public class PlayerShield : MonoBehaviour
             usingShieldRed = false;
             _shieldRed.SetActive(false);
             _shieldBlue.SetActive(true);
+            
             RedPlayer.SetActive(true);
             BluePlayer.SetActive(false);
             _CastSpel_PS.startColor = new Color32(191, 0, 0, 255);
