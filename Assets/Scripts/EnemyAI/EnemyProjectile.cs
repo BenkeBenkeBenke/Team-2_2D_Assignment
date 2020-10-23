@@ -4,57 +4,48 @@ using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
-    public float dieTime, damage;
-    public GameObject diePerfect;
-    public bool redMissile;
-    public bool blueMissile;
-    // Start is called before the first frame update
-    void Start()
+    public float speed = 1f;
+    public float lifespan = 2.0f;
+    public float damage = 10f;
+
+     public Vector2 initialSpeed;
+
+    private GameObject _aim;
+    private Vector2 direction;
+    private Rigidbody2D _body;
+    //private GameObject _player;
+    //private GameObject _player;
+
+    private void Awake()
     {
-        StartCoroutine(CountDownTimer());
+        _body = GetComponent<Rigidbody2D>();
+        _aim = GameObject.Find("Player");
+        //_player = GameObject.Find("Player");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetInitialSpeed(Vector2 playerSpeed)
     {
-        
+        initialSpeed = playerSpeed;
+    }
+    public void Start()
+    {
+        direction = _aim.transform.position - transform.position;
+        _body.velocity = direction * speed + initialSpeed;
+
+        Destroy(gameObject, lifespan);
     }
 
-    private void OnTriggerEnter2D(Collider2D col)
+    private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log(other);
+        //Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), _player.GetComponent<Collider2D>());
         /*
-        if (redMissile)
+        if (other.gameObject.tag == gameObject.tag)
         {
-            if (col.gameObject.CompareTag("Blue"))
-            {
-                col.gameObject.GetComponentInParent<PlayerHealth>().TakeDamage(damage);
-                Destroy(gameObject);
-            }
+            Destroy(other.gameObject);
         }
-        else if (blueMissile)
-        {
-            if (col.gameObject.CompareTag("Red"))
-            {
-                col.gameObject.GetComponentInParent<PlayerHealth>().TakeDamage(damage);
-
-                Destroy(gameObject);
-            }
-        }
-        
-        Destroy(gameObject);
         */
-       
-    }
-
-    IEnumerator CountDownTimer()
-    {
-        yield return new WaitForSeconds(dieTime);
-
-        Die();
-    }
-
-    void Die()
-    {
         Destroy(gameObject);
     }
+
 }

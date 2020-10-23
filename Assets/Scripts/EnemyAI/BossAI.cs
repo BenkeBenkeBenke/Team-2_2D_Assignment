@@ -7,15 +7,25 @@ public class BossAI : MonoBehaviour
     private EnemyAI enemyAiScript;
     public float bossHealth;
     public GameObject EnemyToSpawn;
+    public GameObject EnemyToSpawn2;
+    public GameObject EnemyToSpawn3;
     public Transform EnemySpawn;
     public Transform EnemySpawn2;
+    public Transform EnemySpawn3;
     public GameObject SpawnEffect;
+    public Transform TeleportSpot;
+    public Transform TeleportSpot2;
     public float spawnTimer;
+    public float teleportTimer;
     public float healTimer;
     public float specialAttackTimer;
     public float tauntTimer;
     public float shieldTimer;
     public float healAmount;
+
+
+    private bool teleportspotactivated;
+    private bool teleportspot2activated;
 
     private bool redShield;
     private bool blueShield;
@@ -23,6 +33,9 @@ public class BossAI : MonoBehaviour
 
     private bool cooling;
     private float intTimer;
+
+    private bool coolingTeleport;
+    private float intTeleportTimer;
 
 
     private bool coolingHeal;
@@ -40,7 +53,7 @@ public class BossAI : MonoBehaviour
     void Awake()
     {
         intTimer = spawnTimer;
-
+        intTeleportTimer = teleportTimer;
         intHealTimer = healTimer;
         intSpecialTimer = specialAttackTimer;
         intShieldTimer = shieldTimer;
@@ -87,14 +100,20 @@ public class BossAI : MonoBehaviour
             SwitchShields();
         }
 
-        if(bossHealth <= 70f && cooling == false)
+        if(enemyAiScript.health <= 70f && cooling == false)
         {
             SpawnEnemies();
         }
 
-        if(bossHealth <= 90 && coolingTaunt == false)
+        if(enemyAiScript.health <= 90 && coolingTaunt == false)
         {
             Taunt();
+        }
+
+        if (enemyAiScript.health <= 50 && coolingTeleport == false)
+        {
+
+            TeleportBoss();
         }
 
         if (cooling)
@@ -121,6 +140,10 @@ public class BossAI : MonoBehaviour
         {
             CooldownTaunt();
         }
+        if (coolingTeleport)
+        {
+            CooldownTeleport();
+        }
 
 
 
@@ -133,7 +156,12 @@ public class BossAI : MonoBehaviour
         spawnTimer = intTimer;
 
         GameObject newEnemy = Instantiate(EnemyToSpawn, EnemySpawn.position, Quaternion.identity);
+        GameObject newEnemy2 = Instantiate(EnemyToSpawn2, EnemySpawn2.position, Quaternion.identity);
+        GameObject newEnemy3 = Instantiate(EnemyToSpawn3, EnemySpawn3.position, Quaternion.identity);
+
         GameObject spawnEffect = Instantiate(SpawnEffect, EnemySpawn.position, Quaternion.identity);
+        GameObject spawnEffect2 = Instantiate(SpawnEffect, EnemySpawn2.position, Quaternion.identity);
+        GameObject spawnEffect3 = Instantiate(SpawnEffect, EnemySpawn3.position, Quaternion.identity);
 
         TriggerCooling();
 
@@ -174,6 +202,27 @@ public class BossAI : MonoBehaviour
 
     }
 
+    public void TeleportBoss()
+    {
+        if (!teleportspotactivated)
+        {
+            transform.position = TeleportSpot.position;
+
+            teleportspotactivated = true;
+            teleportspot2activated = false;
+        }
+
+        else if (teleportspot2activated)
+        {
+            transform.position = TeleportSpot2.position;
+
+            teleportspotactivated = false;
+            teleportspot2activated = true;
+        }
+
+        TriggerTeleport();
+    }
+
     public void Taunt()
     {
         tauntTimer = intTauntTimer;
@@ -191,6 +240,16 @@ public class BossAI : MonoBehaviour
         {
             cooling = false;
             spawnTimer = intTimer;
+        }
+    }
+
+    void CooldownTeleport()
+    {
+        teleportTimer -= Time.deltaTime;
+        if(teleportTimer <= 0 && coolingTeleport && enemyAiScript.attackMode)
+        {
+            coolingTeleport = false;
+            teleportTimer = intTeleportTimer;
         }
     }
 
@@ -259,6 +318,11 @@ public class BossAI : MonoBehaviour
     public void TriggerShield()
     {
         coolingShield = true;
+    }
+
+    public void TriggerTeleport()
+    {
+        coolingTeleport = true;
     }
 
 

@@ -1,24 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class EnemyAI : MonoBehaviour
 {
     #region Public Variables
+    public bool MeleeAI;
     public bool RangedAI;
     public bool Boss;
     public bool StaticAI;
     public bool Civilian;
     public bool Bomber;
+    public bool SpawnedAI;
+    
 
+    public float damage;
     public float health;
     public float Hitpoints;
     public bool blueShield;
     public bool redShield;
     public float attackDistance;
     public float moveSpeed;
-    public float timer;
+    public float timer; 
+   
 
     public Transform target;
     public bool inRange;
@@ -43,21 +51,33 @@ public class EnemyAI : MonoBehaviour
     private Animator anim;
     private float distance;
     public bool attackMode;
-    
+
+    private Rigidbody2D _body;
+
     private bool cooling;
     private float intTimer;
     private Transform Player;
+    private PlayerHealth playerHealth;
     #endregion
 
     
     void Awake()
     {
+
+        _body = GetComponent<Rigidbody2D>();
         Hitpoints = health;
         SelectTarget();
         intTimer = timer;
         anim = this.gameObject.transform.GetChild(1).GetComponent<Animator>();
         Healthbar.SetHealth(Hitpoints, health);
         Player = GameObject.FindWithTag("Player").transform;
+        playerHealth = GameObject.FindWithTag("Player").GetComponent<PlayerHealth>();
+
+        if (Bomber && SpawnedAI)
+        {
+            leftLimit = GameObject.FindWithTag("leftLimit").transform;
+            rightLimit = GameObject.FindWithTag("rightLimit").transform;
+        }
 
     }
 
@@ -71,7 +91,7 @@ public class EnemyAI : MonoBehaviour
             Move();
         }
 
-        if (!InsideOfLimits() && !inRange && !anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+        if (!InsideOfLimits() && !inRange && !anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1") && !SpawnedAI)
         {
             SelectTarget();
         }
@@ -80,6 +100,12 @@ public class EnemyAI : MonoBehaviour
         {
 
             AILogic();
+        }
+
+        else if (!inRange && attackMode)
+        {
+            target = Player;
+            Move();
         }
 
         if (blueShield)
@@ -99,18 +125,15 @@ public class EnemyAI : MonoBehaviour
     {
         distance = Vector2.Distance(transform.position, Player.position);
 
-        if(distance > attackDistance)
-        {
-            StopAttack();
-            anim.SetBool("Walk", true);
-        }
-        else if(attackDistance >= distance && cooling == false && Civilian == false && Bomber == false)
+     
+        if(attackDistance >= distance && cooling == false && Civilian == false && Bomber == false)
         {
             Attack();
         }
 
         else if(0.3 >= distance && Civilian == false && Bomber == true)
         {
+            playerHealth.TakeDamage(damage);
             Die();
             Bomber = false;
         }
@@ -119,10 +142,13 @@ public class EnemyAI : MonoBehaviour
         {
             Cooldown();
         }
+
+      
     }
 
     void Move()
     {
+        anim.SetBool("Attack1", false);
         anim.SetBool("Walk", true);
 
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
@@ -140,12 +166,18 @@ public class EnemyAI : MonoBehaviour
         anim.SetBool("Attack1", true);
         anim.SetBool("Walk", false);
 
+        if (MeleeAI)
+        {
+            playerHealth.TakeDamage(damage);
+        }
+
         if (RangedAI)
         {
 
-            GameObject newMissile = Instantiate(Missile, MissileSpawn.position, Quaternion.identity);
+            var newProjectile = Instantiate(Missile, MissileSpawn.transform.position, Quaternion.identity);
+            newProjectile.GetComponent<EnemyProjectile>().SetInitialSpeed(_body.velocity);
 
-            newMissile.GetComponent<Rigidbody2D>().velocity = new Vector2(MissleSpeed * moveSpeed * Time.fixedDeltaTime, 0f);
+
         }
 
 
@@ -184,19 +216,25 @@ public class EnemyAI : MonoBehaviour
 
     public void SelectTarget()
     {
-        float distanceToLeft = Vector2.Distance(transform.position, leftLimit.position);
-        float distanceToRight = Vector2.Distance(transform.position, rightLimit.position);
+        
 
-        if(distanceToLeft > distanceToRight)
-        {
-            target = leftLimit;
-        }
-        else
-        {
-            target = rightLimit;
-        }
+       
+            float distanceToLeft = Vector2.Distance(transform.position, leftLimit.position);
+            float distanceToRight = Vector2.Distance(transform.position, rightLimit.position);
 
-        Flip();
+            if (distanceToLeft > distanceToRight)
+            {
+                target = leftLimit;
+            }
+            else
+            {
+                target = rightLimit;
+            }
+
+            Flip();
+        
+
+    
     }
 
     public void Flip()
@@ -216,7 +254,7 @@ public class EnemyAI : MonoBehaviour
 
     public void EnemyTakeDamage(float damage)
     {
-        anim.SetBool("TakeHit", true);
+        anim.SetTrigger("TakeHit");
 
         health = health - damage;
             Healthbar.SetHealth(Hitpoints, health);
