@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
     //public float accelerationSpeed = 1;
     public float jumpPower = 10f;
+    public float knockbackPower = 300f;
 
     [NonSerialized] public float currentSpeed;
     [NonSerialized] public Vector2 movementInput;
@@ -98,6 +99,11 @@ public class PlayerMovement : MonoBehaviour
         _animatorRED.SetFloat("Body_Velocity_Vertical", Input.GetAxis("Vertical"));
         _animatorBlue.SetFloat("Body_Velocity_Horizontal", Input.GetAxis("Horizontal"));
         _animatorBlue.SetFloat("Body_Velocity_Vertical", Input.GetAxis("Vertical"));
+    }
+
+    public void Knockback(float direction)
+    {
+        _body.AddForce(new Vector2(direction * knockbackPower, 100));
     }
 
     void OnCollisionEnter2D(Collision2D collision)

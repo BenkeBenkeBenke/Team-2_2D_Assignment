@@ -11,12 +11,14 @@ public class PlayerTriggerCollision : MonoBehaviour
     
     private PlayerHealth _playerHealth;
     private PlayerRespawn _playerRespawn;
+    private PlayerMovement _playerMovement;
 
     private void Start()
     {
         //_playerHealth = gameObject.GetComponent<PlayerHealth>();
         _playerHealth = GetComponentInParent<PlayerHealth>();
         _playerRespawn = GetComponentInParent<PlayerRespawn>();
+        _playerMovement = GetComponentInParent<PlayerMovement>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -42,6 +44,22 @@ public class PlayerTriggerCollision : MonoBehaviour
         {
             _playerHealth.TakeDamage(1);
             Destroy(other.gameObject);
+        }
+        // Take damgae from enemies
+        if (other.gameObject.tag == "Enemy")
+        {
+            //Debug.Log("KNOVKBACKS");
+            // knockback to the left
+            if (transform.position.x < other.transform.position.x)
+            {
+                _playerMovement.Knockback(-1);
+            }
+            // knockback to the right
+            if (transform.position.x > other.transform.position.x)
+            {
+                _playerMovement.Knockback(1);
+            }
+            _playerHealth.TakeDamage(1);
         }
         
         // Activate checkpoints and set new respawn location
